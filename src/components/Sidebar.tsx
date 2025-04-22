@@ -24,7 +24,7 @@ const Sidebar = ({
   const pathname = usePathname();
   const navigations = useNavItems();
 
-  const { removeUser, user } = useUser();
+  const { removeUser } = useUser();
 
   const Icon = collapsed ? ChevronRightCircleIcon : ChevronLeftCircleIcon;
 

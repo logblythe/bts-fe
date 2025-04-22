@@ -8,15 +8,11 @@ import { createContext, PropsWithChildren, useEffect, useState } from "react";
 interface TAuthContext {
   user: AuthUser | null;
   setUser: (user: AuthUser | null) => void;
-  roles: UserRole[];
-  setRoles(roles: UserRole[]): void;
 }
 
 export const AuthContext = createContext<TAuthContext>({
   user: null,
   setUser: () => {},
-  roles: [],
-  setRoles: (roles: UserRole[]) => {},
 });
 
 export const AuthProvider = ({ children }: PropsWithChildren) => {
@@ -33,7 +29,6 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
       if (existingUser) {
         try {
           setUser(JSON.parse(existingUser));
-          setRoles(JSON.parse(getCookie("roles") ?? ""));
         } catch (e) {
           console.error(e);
         }
@@ -43,7 +38,7 @@ export const AuthProvider = ({ children }: PropsWithChildren) => {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, setUser, roles, setRoles }}>
+    <AuthContext.Provider value={{ user, setUser }}>
       {children}
     </AuthContext.Provider>
   );

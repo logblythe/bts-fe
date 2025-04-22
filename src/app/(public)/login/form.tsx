@@ -15,7 +15,7 @@ import { useUser } from "@/hooks/useUser";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -29,8 +29,6 @@ const apiClient = new ApiClient();
 export default function LoginForm() {
   const { addUser } = useUser();
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const redirect = searchParams.get("redirect");
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -43,7 +41,10 @@ export default function LoginForm() {
   const loginMutation = useMutation({
     mutationFn: (data: z.infer<typeof FormSchema>) => apiClient.login(data),
     onSuccess: (data) => {
-      addUser({ ...data, expiresIn: new Date().getSeconds() + data.expiresIn });
+      addUser({
+        ...data,
+        expires_at: new Date().getSeconds() + data.expires_at,
+      });
       router.push("/events");
     },
     onError: () => {

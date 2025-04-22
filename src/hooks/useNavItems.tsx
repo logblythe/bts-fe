@@ -2,7 +2,6 @@ import React from "react";
 
 import { useEventStore } from "@/store/event-store";
 import { CalendarCheck2, Globe, UserCog } from "lucide-react";
-import { useUser } from "./useUser";
 
 export type NavItem = {
   label: string;
@@ -12,7 +11,6 @@ export type NavItem = {
 
 const useNavItems = () => {
   const { selectedEventId } = useEventStore();
-  const { roles } = useUser();
 
   const defaultNavItems: NavItem[] = [
     {

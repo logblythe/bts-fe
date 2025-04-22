@@ -5,8 +5,8 @@ export type TUser = {
 };
 
 export type AuthUser = {
-  token: string;
-  expiresIn: number;
+  access_token: string;
+  expires_at: number;
   expired: boolean;
 };
 

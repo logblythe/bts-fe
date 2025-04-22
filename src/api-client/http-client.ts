@@ -13,8 +13,8 @@ export default class HttpClient {
       return JSON.parse(userFromStorage);
     }
     return {
-      token: "",
-      expiresIn: 0,
+      access_token: "",
+      expires_at: 0,
       expired: true,
     };
   }
@@ -27,7 +27,7 @@ export default class HttpClient {
   ): Promise<T> {
     // const token = this.getBearerToken();
 
-    const { token } = this.getUserInfo();
+    const { access_token: token } = this.getUserInfo();
 
     const defaultHeaders: Record<string, string> = {
       Authorization: `Bearer ${token}`,
@@ -47,6 +47,10 @@ export default class HttpClient {
     const response = await fetch(`${this.baseUrl}${endpoint}`, options);
 
     if (!response.ok) {
+      if (response.status === 401 || response.status === 403) {
+        localStorage.removeItem("user");
+        window.location.href = "/login";
+      }
       const responseJson = await response.json();
       throw new Error(responseJson.message);
     }
@@ -62,7 +66,7 @@ export default class HttpClient {
     headers: Record<string, string> = {},
     body: any = null
   ): Promise<T> {
-    const { token } = this.getUserInfo();
+    const { access_token: token } = this.getUserInfo();
 
     const defaultHeaders: Record<string, string> = {
       Authorization: `Bearer ${token}`,
@@ -124,7 +128,7 @@ export default class HttpClient {
     method: string = "GET",
     headers: Record<string, string> = {}
   ): Promise<void> {
-    const { token } = this.getUserInfo();
+    const { access_token: token } = this.getUserInfo();
 
     const defaultHeaders: Record<string, string> = {
       Authorization: `Bearer ${token}`,

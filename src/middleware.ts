@@ -8,7 +8,7 @@ export function middleware(request: NextRequest) {
   if (!user) {
     return NextResponse.redirect(new URL(`/login`, request.url));
   }
-  const hasTokenExpired = user && new Date().getSeconds() > user.expiresIn;
+  const hasTokenExpired = user && new Date().getSeconds() > user.expires_at;
   if (hasTokenExpired) {
     return NextResponse.redirect(new URL(`/login`, request.url));
   }
