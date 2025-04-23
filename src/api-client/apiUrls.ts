@@ -16,4 +16,11 @@ export const apiUrls = {
     getEventDefinitions: "/events/definition",
     deleteEventById: (eventId: string) => `/events/${eventId}`,
   },
+  configs: {
+    get: "/configs",
+    post: "/configs",
+    getById: (configId: string) => `/configs/${configId}`,
+    deleteById: (configId: string) => `/configs/${configId}`,
+    updateById: (configId: string) => `/configs/${configId}`,
+  },
 };

@@ -11,7 +11,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useAppStore } from "@/store/app-store";
+import { ConfigType } from "@/type/config-type";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Plus } from "lucide-react";
 import { useState } from "react";
@@ -29,11 +29,11 @@ const apiClient = new ApiClient();
 const GlobalConfigList = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  const { apps, addApp } = useAppStore();
+  const [currentConfig, setCurrentConfig] = useState<ConfigType | null>(null);
 
-  const { data = [], isLoading } = useQuery({
-    queryKey: ["events"],
-    queryFn: () => apiClient.getEvents(),
+  const { data: configs = [], isLoading } = useQuery({
+    queryKey: ["configs"],
+    queryFn: () => apiClient.getConfigs(),
   });
 
   return (
@@ -54,15 +54,20 @@ const GlobalConfigList = () => {
         </Button>
       </div>
       <div className="shadow-sm border rounded-md p-4 flex flex-col space-y-4">
-        <Select defaultValue="livessosetup">
+        <Select
+          onValueChange={(value) => {
+            setCurrentConfig(configs.find((app) => app.id === value) || null);
+          }}
+          value={currentConfig?.id}
+        >
           <SelectTrigger className="w-[360px]">
             <SelectValue placeholder="Select sso setup" />
           </SelectTrigger>
           <SelectContent>
             <SelectGroup>
-              {apps.map((app) => (
-                <SelectItem key={app.alias} value={app.alias}>
-                  {app.name}
+              {configs.map((app) => (
+                <SelectItem key={app.id} value={app.id}>
+                  {app.details.appName}
                 </SelectItem>
               ))}
             </SelectGroup>
@@ -74,18 +79,14 @@ const GlobalConfigList = () => {
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <TabsContent value="details">
-            <DetailsView />
+            <DetailsView config={currentConfig} key={currentConfig?.id} />
           </TabsContent>
           <TabsContent value="settings">
-            <SettingsView />
+            <SettingsView config={currentConfig} key={currentConfig?.id} />
           </TabsContent>
         </Tabs>
       </div>
-      <AddAppDialog
-        open={isOpen}
-        onOpenChange={() => setIsOpen(!isOpen)}
-        onSubmit={(data) => addApp(data as App)}
-      />
+      <AddAppDialog open={isOpen} onOpenChange={() => setIsOpen(!isOpen)} />
     </div>
   );
 };

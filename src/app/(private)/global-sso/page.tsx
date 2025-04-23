@@ -7,16 +7,16 @@ import GlobalConfigList from "./_components/global-config-list";
 const questionsClient = new ApiClient();
 
 export const metadata: Metadata = {
-  title: "BTS | Events",
-  description: "View all events",
+  title: "BTS | SSO configs",
+  description: "View all configs",
 };
 
 export default async function EventsPage() {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["events"],
-    queryFn: () => questionsClient.getEvents(),
+    queryKey: ["configs"],
+    queryFn: () => questionsClient.getConfigs(),
   });
 
   return (

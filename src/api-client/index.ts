@@ -1,4 +1,5 @@
 import { AuthUser } from "@/type/auth";
+import { ConfigType } from "@/type/config-type";
 import { EventType } from "@/type/event-type";
 import { PaginatedResponse } from "@/type/paginated-response";
 import { User, UserPayload, UserRole } from "@/type/user";
@@ -110,6 +111,38 @@ class ApiClient {
   public async deleteEventById(eventId: string): Promise<EventType[]> {
     return this.httpClient.request<EventType[]>(
       apiUrls.events.deleteEventById(eventId),
+      "DELETE"
+    );
+  }
+
+  public async getConfigs(): Promise<ConfigType[]> {
+    return this.httpClient.request<ConfigType[]>(apiUrls.configs.get);
+  }
+
+  public async createConfig(data: Partial<ConfigType>): Promise<ConfigType> {
+    return this.httpClient.request<ConfigType>(
+      apiUrls.configs.post,
+      "POST",
+      {},
+      data
+    );
+  }
+
+  public async updateConfig(
+    id: string,
+    data: Omit<ConfigType, "id">
+  ): Promise<ConfigType> {
+    return this.httpClient.request<ConfigType>(
+      apiUrls.configs.updateById(id),
+      "PUT",
+      {},
+      data
+    );
+  }
+
+  public async deleteConfigById(configId: string): Promise<void> {
+    return this.httpClient.request<void>(
+      apiUrls.configs.deleteById(configId),
       "DELETE"
     );
   }
