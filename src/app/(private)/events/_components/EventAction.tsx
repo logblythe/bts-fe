@@ -12,20 +12,41 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import { useAppStore } from "@/store/app-store";
 import { useEventStore } from "@/store/event-store";
 import { EventType } from "@/type/event-type";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Loader2, Trash2 } from "lucide-react";
+import { useState } from "react";
 
 const apiClient = new ApiClient();
 
 const EventAction = ({ event }: { event: EventType }) => {
-  const { apps } = useAppStore();
+  const { selectedEventId: activeEventId } = useEventStore();
 
   const queryClient = useQueryClient();
 
-  const { selectedEventId: activeEventId } = useEventStore();
+  const [currentConfigId, setCurrentConfigId] = useState(event.configId ?? "-");
+
+  const { data: configs = [] } = useQuery({
+    queryKey: ["configs"],
+    queryFn: () => apiClient.getConfigs(),
+  });
+
+  const updateEventConfigId = useMutation({
+    mutationFn: ({ configId }: { configId: string }) =>
+      apiClient.updateEventConfigId(event.id, { configId }),
+    mutationKey: ["event", event.id, "updateConfigId"],
+    onSuccess: () => {
+      toast({
+        description: (
+          <p>
+            Config assigned to <b>{event.name}</b>
+          </p>
+        ),
+      });
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
 
   const deleteMutation = useMutation({
     mutationFn: () => apiClient.deleteEventById(event.id),
@@ -44,20 +65,31 @@ const EventAction = ({ event }: { event: EventType }) => {
 
   return (
     <div className="flex flex-row space-x-4 items-center">
-      <Select defaultValue="livessosetup">
+      <Select
+        onValueChange={(configId) => {
+          setCurrentConfigId(configId);
+          updateEventConfigId.mutate({ configId });
+        }}
+        value={currentConfigId}
+      >
         <SelectTrigger className="w-[200px] text-xs rounded-lg">
           <SelectValue placeholder="Select sso setup" />
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {apps.map((app) => (
-              <SelectItem key={app.alias} value={app.alias}>
-                {app.name}
+            {configs.map(({ id, details }) => (
+              <SelectItem key={id} value={id}>
+                {details.appName}
               </SelectItem>
             ))}
           </SelectGroup>
         </SelectContent>
       </Select>
+      <Loader2
+        className={`h-4 w-4 animate-spin ${
+          updateEventConfigId.isPending ? "inline-flex" : "invisible"
+        }`}
+      />
       <TooltipWrapper content={"Delete"}>
         <Button
           variant="outline"

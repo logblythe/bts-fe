@@ -115,6 +115,18 @@ class ApiClient {
     );
   }
 
+  public async updateEventConfigId(
+    eventId: string,
+    payload: Pick<EventType, "configId">
+  ): Promise<void> {
+    return this.httpClient.request<void>(
+      apiUrls.events.updateConfigId(eventId),
+      "PUT",
+      {},
+      payload
+    );
+  }
+
   public async getConfigs(): Promise<ConfigType[]> {
     return this.httpClient.request<ConfigType[]>(apiUrls.configs.get);
   }
