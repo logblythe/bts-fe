@@ -15,7 +15,10 @@ export const apiUrls = {
     importEvent: "/events",
     getEventDefinitions: "/events/definition",
     deleteEventById: (eventId: string) => `/events/${eventId}`,
-    updateConfigId: (eventId: string) => `/events/${eventId}/update-config-id`,
+    updateConfig: (eventId: string) => `/events/${eventId}/update-config`,
+  },
+  msdynamicEvents: {
+    get: "/msEvents",
   },
   configs: {
     get: "/configs",

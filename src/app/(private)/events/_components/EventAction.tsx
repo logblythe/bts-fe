@@ -15,12 +15,15 @@ import { toast } from "@/components/ui/use-toast";
 import { useEventStore } from "@/store/event-store";
 import { EventType } from "@/type/event-type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Trash2 } from "lucide-react";
 import { useState } from "react";
+import AssignDialog from "./AssignDialog";
 
 const apiClient = new ApiClient();
 
 const EventAction = ({ event }: { event: EventType }) => {
+  const [isOpen, setIsOpen] = useState(false);
+
   const { selectedEventId: activeEventId } = useEventStore();
 
   const queryClient = useQueryClient();
@@ -34,7 +37,7 @@ const EventAction = ({ event }: { event: EventType }) => {
 
   const updateEventConfigId = useMutation({
     mutationFn: ({ configId }: { configId: string }) =>
-      apiClient.updateEventConfigId(event.id, { configId }),
+      apiClient.updateEventConfig(event.id, { ...event, configId }),
     mutationKey: ["event", event.id, "updateConfigId"],
     onSuccess: () => {
       toast({
@@ -90,6 +93,16 @@ const EventAction = ({ event }: { event: EventType }) => {
           updateEventConfigId.isPending ? "inline-flex" : "invisible"
         }`}
       />
+      <Button
+        variant="outline"
+        size="icon"
+        onClick={(e) => {
+          e.stopPropagation();
+          setIsOpen(!isOpen);
+        }}
+      >
+        <Pencil className="h-4 w-4 text-blue-800" />
+      </Button>
       <TooltipWrapper content={"Delete"}>
         <Button
           variant="outline"
@@ -108,6 +121,13 @@ const EventAction = ({ event }: { event: EventType }) => {
           )}
         </Button>
       </TooltipWrapper>
+      <AssignDialog
+        open={isOpen}
+        onOpenChange={() => {
+          setIsOpen(!isOpen);
+        }}
+        event={event}
+      />
     </div>
   );
 };

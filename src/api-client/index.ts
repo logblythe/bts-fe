@@ -93,6 +93,10 @@ class ApiClient {
     return this.httpClient.request<EventType[]>(apiUrls.events.get);
   }
 
+  public async getMsDynamicEvents(): Promise<EventType[]> {
+    return this.httpClient.request<EventType[]>(apiUrls.msdynamicEvents.get);
+  }
+
   public async getAllEvents(): Promise<EventType[]> {
     return this.httpClient.request<EventType[]>(
       apiUrls.events.getEventDefinitions
@@ -115,12 +119,12 @@ class ApiClient {
     );
   }
 
-  public async updateEventConfigId(
+  public async updateEventConfig(
     eventId: string,
-    payload: Pick<EventType, "configId">
+    payload: EventType
   ): Promise<void> {
     return this.httpClient.request<void>(
-      apiUrls.events.updateConfigId(eventId),
+      apiUrls.events.updateConfig(eventId),
       "PUT",
       {},
       payload
