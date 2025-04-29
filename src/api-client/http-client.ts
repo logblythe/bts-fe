@@ -57,7 +57,11 @@ export default class HttpClient {
     if (method === "DELETE") {
       return response as T;
     }
-    return await response.json();
+    try {
+      return await response.json();
+    } catch (e) {
+      return response as T;
+    }
   }
 
   public async multiPartRequest<T>(

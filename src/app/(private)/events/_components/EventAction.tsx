@@ -15,7 +15,7 @@ import { toast } from "@/components/ui/use-toast";
 import { useEventStore } from "@/store/event-store";
 import { EventType } from "@/type/event-type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Pencil, Trash2 } from "lucide-react";
+import { Loader2, Pencil, Play, Trash2 } from "lucide-react";
 import { useState } from "react";
 import AssignDialog from "./AssignDialog";
 
@@ -66,6 +66,23 @@ const EventAction = ({ event }: { event: EventType }) => {
     },
   });
 
+  const updateMemberCategoryMutation = useMutation({
+    mutationFn: () => apiClient.updateMemberCategory(event.id),
+    mutationKey: ["event", event.id, "updateMemberCategory"],
+    onSuccess: () => {
+      console.log("Member category updated");
+      toast({
+        description: (
+          <p>
+            Member category update for event <b>{event.name}</b> has been
+            triggered
+          </p>
+        ),
+      });
+      queryClient.invalidateQueries({ queryKey: ["events"] });
+    },
+  });
+
   return (
     <div className="flex flex-row space-x-4 items-center">
       <Select
@@ -102,6 +119,21 @@ const EventAction = ({ event }: { event: EventType }) => {
         }}
       >
         <Pencil className="h-4 w-4 text-blue-800" />
+      </Button>
+      <Button
+        variant="outline"
+        size="icon"
+        disabled={updateMemberCategoryMutation.isPending}
+        onClick={(e) => {
+          e.stopPropagation();
+          updateMemberCategoryMutation.mutate();
+        }}
+      >
+        {updateMemberCategoryMutation.isPending ? (
+          <Loader2 className="h-4 w-4 animate-spin" />
+        ) : (
+          <Play className="h-4 w-4 text-green-800" />
+        )}
       </Button>
       <TooltipWrapper content={"Delete"}>
         <Button

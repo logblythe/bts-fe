@@ -162,6 +162,11 @@ class ApiClient {
       "DELETE"
     );
   }
+
+  public async updateMemberCategory(eventId: string): Promise<void> {
+    const url = `${apiUrls.msdynamicEvents.updateMemberCategory}?eventId=${eventId}`;
+    return this.httpClient.request<void>(url, "POST");
+  }
 }
 
 export default ApiClient;

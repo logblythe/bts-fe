@@ -19,6 +19,7 @@ export const apiUrls = {
   },
   msdynamicEvents: {
     get: "/msEvents",
+    updateMemberCategory: "/msEvents/updateMemberCategory",
   },
   configs: {
     get: "/configs",

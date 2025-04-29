@@ -37,9 +37,13 @@ export default function AssignDialog(props: DialogProps) {
 
   const queryClient = useQueryClient();
 
-  const [dynamicsEvent, setDynamicsEvent] = useState("");
-  const [memberCategoryField, setMemberCategoryField] = useState("");
-  const [memberStatusField, setMemberStatusField] = useState("");
+  const [dynamicsEvent, setDynamicsEvent] = useState(event.dynamicsEvent ?? "");
+  const [memberCategoryField, setMemberCategoryField] = useState(
+    event.memberCategoryField ?? "None"
+  );
+  const [memberStatusField, setMemberStatusField] = useState(
+    event.memberStatusField ?? "None"
+  );
 
   const msEventsQuery = useQuery<Array<{ id: string; name: string }>>({
     queryKey: ["ms-events"],
@@ -88,7 +92,7 @@ export default function AssignDialog(props: DialogProps) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-[425px] sm:min-w-full lg:min-w-[720px] h-2/3 flex flex-col"
+        className="sm:max-w-[425px] sm:min-w-full lg:min-w-[720px] h-2/4 flex flex-col"
         onClick={handleModalClick}
       >
         <DialogHeader>
@@ -97,96 +101,102 @@ export default function AssignDialog(props: DialogProps) {
             Select the configurations you want to assign to the event.
           </DialogDescription>
         </DialogHeader>
-        <div className="shadow-sm border rounded-md p-4 flex flex-col space-y-4">
-          <div className="flex flex-col space-y-2">
-            <Label className="text-sm font-medium leading-none peer">
-              MS Dynamic Event
-            </Label>
-            <Select
-              value={dynamicsEvent}
-              onValueChange={(value) => {
-                setDynamicsEvent(value);
-              }}
-            >
-              <SelectTrigger className="w-[420px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent className="w-[420px]">
-                <SelectGroup>
-                  {msEvents.map((event) => (
-                    <SelectItem key={event.id} value={event.id}>
-                      {event.name}
+        <div className="shadow-sm border rounded-md p-4 flex flex-col  h-full justify-between">
+          <div className="space-y-4 p-2">
+            <div className="flex flex-col space-y-2">
+              <Label className="text-sm font-medium leading-none peer">
+                MS Dynamic Event
+              </Label>
+              <Select
+                value={dynamicsEvent}
+                onValueChange={(value) => {
+                  setDynamicsEvent(value);
+                }}
+              >
+                <SelectTrigger className="w-[420px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="w-[420px]">
+                  <SelectGroup>
+                    {msEvents.map((event) => (
+                      <SelectItem key={event.id} value={event.id}>
+                        {event.name}
+                      </SelectItem>
+                    ))}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="text-sm font-medium leading-none peer">
+                Member Category Location
+              </Label>
+              <Select
+                value={memberCategoryField}
+                onValueChange={(value) => {
+                  setMemberCategoryField(value);
+                }}
+              >
+                <SelectTrigger className="w-[420px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="None">None</SelectItem>
+                    <SelectItem value="Sub Department">
+                      Sub Department
                     </SelectItem>
-                  ))}
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <Label className="text-sm font-medium leading-none peer">
-              Member Category Location
-            </Label>
-            <Select
-              value={memberCategoryField}
-              onValueChange={(value) => {
-                setMemberCategoryField(value);
-              }}
-            >
-              <SelectTrigger className="w-[420px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="None">None</SelectItem>
-                  <SelectItem value="Sub Department">Sub Department</SelectItem>
-                  <SelectItem value="User Defined Field 1">
-                    User Defined Field 1
-                  </SelectItem>
-                  <SelectItem value="User Defined Field 2">
-                    User Defined Field 2
-                  </SelectItem>
-                  <SelectItem value="User Defined Field 3">
-                    User Defined Field 3
-                  </SelectItem>
-                  <SelectItem value="User Defined Field 4">
-                    User Defined Field 4
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-          </div>
-          <div className="flex flex-col space-y-2">
-            <Label className="text-sm font-medium leading-none peer">
-              Member Status Location
-            </Label>
-            <Select
-              value={memberStatusField}
-              onValueChange={(value) => {
-                setMemberStatusField(value);
-              }}
-            >
-              <SelectTrigger className="w-[420px]">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="None">None</SelectItem>
-                  <SelectItem value="Sub Department">Sub Department</SelectItem>
-                  <SelectItem value="User Defined Field 1">
-                    User Defined Field 1
-                  </SelectItem>
-                  <SelectItem value="User Defined Field 2">
-                    User Defined Field 2
-                  </SelectItem>
-                  <SelectItem value="User Defined Field 3">
-                    User Defined Field 3
-                  </SelectItem>
-                  <SelectItem value="User Defined Field 4">
-                    User Defined Field 4
-                  </SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
+                    <SelectItem value="User Defined Field 1">
+                      User Defined Field 1
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 2">
+                      User Defined Field 2
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 3">
+                      User Defined Field 3
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 4">
+                      User Defined Field 4
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label className="text-sm font-medium leading-none peer">
+                Member Status Location
+              </Label>
+              <Select
+                value={memberStatusField}
+                onValueChange={(value) => {
+                  setMemberStatusField(value);
+                }}
+              >
+                <SelectTrigger className="w-[420px]">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectGroup>
+                    <SelectItem value="None">None</SelectItem>
+                    <SelectItem value="Sub Department">
+                      Sub Department
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 1">
+                      User Defined Field 1
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 2">
+                      User Defined Field 2
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 3">
+                      User Defined Field 3
+                    </SelectItem>
+                    <SelectItem value="User Defined Field 4">
+                      User Defined Field 4
+                    </SelectItem>
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
           <Button
             className="w-fit self-end px-8"
