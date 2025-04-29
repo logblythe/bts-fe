@@ -3,6 +3,7 @@ export type ConfigType = {
   identityProvider: IdentityProvider;
   msDynamics: MsDynamics;
   details: ConfigDetails;
+  statusAndTransactionCodes: StatusAndTransactionCodes;
 };
 
 type IdentityProvider = {
@@ -27,4 +28,21 @@ type ConfigDetails = {
   alias: string;
   url: string;
   redirectUri: string;
+};
+
+export type StatusAndTransactionCodes = {
+  delegateConfirmed: ConfigTypeWithCode;
+  delegateProvisional: ConfigTypeWithCode;
+  delegateWaitList: ConfigTypeWithCode;
+  invoice: ConfigTypeWithCode;
+  creditNote: ConfigTypeWithCode;
+  paymentSource: ConfigTypeWithCode;
+  paymentType: ConfigTypeWithCode;
+  refundType: ConfigTypeWithCode;
+  paymentStatus: ConfigTypeWithCode;
+};
+
+export type ConfigTypeWithCode = {
+  type: "status" | "transaction";
+  code: number;
 };
