@@ -26,8 +26,6 @@ type MsDynamics = {
 type ConfigDetails = {
   appName: string;
   alias: string;
-  url: string;
-  redirectUri: string;
 };
 
 export type StatusAndTransactionCodes = {

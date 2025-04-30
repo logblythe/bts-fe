@@ -1,6 +1,7 @@
 "use client";
 
 import ApiClient from "@/api-client/";
+import { apiUrls } from "@/api-client/apiUrls";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,6 +23,8 @@ import AssignDialog from "./AssignDialog";
 const apiClient = new ApiClient();
 
 const EventAction = ({ event }: { event: EventType }) => {
+  const updateMemberCategoryUrl = `${process.env.NEXT_PUBLIC_API_URL}${apiUrls.msdynamicEvents.updateMemberCategory}?eventId=${event.id}`;
+
   const [isOpen, setIsOpen] = useState(false);
 
   const { selectedEventId: activeEventId } = useEventStore();
@@ -110,31 +113,35 @@ const EventAction = ({ event }: { event: EventType }) => {
           updateEventConfigId.isPending ? "inline-flex" : "invisible"
         }`}
       />
-      <Button
-        variant="outline"
-        size="icon"
-        onClick={(e) => {
-          e.stopPropagation();
-          setIsOpen(!isOpen);
-        }}
-      >
-        <Pencil className="h-4 w-4 text-blue-800" />
-      </Button>
-      <Button
-        variant="outline"
-        size="icon"
-        disabled={updateMemberCategoryMutation.isPending}
-        onClick={(e) => {
-          e.stopPropagation();
-          updateMemberCategoryMutation.mutate();
-        }}
-      >
-        {updateMemberCategoryMutation.isPending ? (
-          <Loader2 className="h-4 w-4 animate-spin" />
-        ) : (
-          <Play className="h-4 w-4 text-green-800" />
-        )}
-      </Button>
+      <TooltipWrapper content={"Update Config"}>
+        <Button
+          variant="outline"
+          size="icon"
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsOpen(!isOpen);
+          }}
+        >
+          <Pencil className="h-4 w-4 text-blue-800" />
+        </Button>
+      </TooltipWrapper>
+      <TooltipWrapper content={updateMemberCategoryUrl}>
+        <Button
+          variant="outline"
+          size="icon"
+          disabled={updateMemberCategoryMutation.isPending}
+          onClick={(e) => {
+            e.stopPropagation();
+            updateMemberCategoryMutation.mutate();
+          }}
+        >
+          {updateMemberCategoryMutation.isPending ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <Play className="h-4 w-4 text-green-800" />
+          )}
+        </Button>
+      </TooltipWrapper>
       <TooltipWrapper content={"Delete"}>
         <Button
           variant="outline"

@@ -14,8 +14,6 @@ import { z } from "zod";
 const FormSchema = z.object({
   appName: z.string().min(1, "Required"),
   alias: z.string().min(1, "Required"),
-  url: z.string().min(1, "Required"),
-  redirectUri: z.string().min(1, "Required"),
 });
 
 export type FormType = z.infer<typeof FormSchema>;
@@ -68,12 +66,6 @@ export const DetailsView = ({ config }: { config?: ConfigType | null }) => {
           placeholder="App name"
         />
         <ControlledInput name="alias" label="Alias" placeholder="Alias" />
-        <ControlledInput name="url" label="Url" placeholder="Url" />
-        <ControlledInput
-          name="redirectUri"
-          label="Redirect URI"
-          placeholder="Redirect URI"
-        />
       </form>
       <div className="flex flex-row justify-end">
         <Button

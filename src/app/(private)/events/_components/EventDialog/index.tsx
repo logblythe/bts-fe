@@ -87,7 +87,7 @@ export default function EventDialog(props: DialogProps) {
         onClick={handleModalClick}
       >
         <DialogHeader>
-          <DialogTitle>Import Event</DialogTitle>
+          <DialogTitle>Add New Event</DialogTitle>
           <DialogDescription>
             Choose the event you would like to import.
           </DialogDescription>

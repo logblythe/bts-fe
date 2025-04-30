@@ -47,7 +47,7 @@ const EventsList = () => {
             setIsOpen(!isOpen);
           }}
         >
-          <Plus className="mr-2 h-4 w-4" /> Import
+          <Plus className="mr-2 h-4 w-4" /> Add Event
         </Button>
         <EventDialog
           open={isOpen}
