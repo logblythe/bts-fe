@@ -25,9 +25,10 @@ const useNavItems = () => {
     },
     {
       label: "User Management",
-      href: selectedEventId
-        ? `/user-management?eventId=${selectedEventId}`
-        : `/user-management`,
+      // href: selectedEventId
+      //   ? `/user-management?eventId=${selectedEventId}`
+      //   : `/user-management`,
+      href: "",
       icon: <UserCog className="w-6 h-6" />,
     },
   ];

@@ -1,7 +1,6 @@
 "use client";
 
 import ApiClient from "@/api-client/";
-import { apiUrls } from "@/api-client/apiUrls";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
 import { Button } from "@/components/ui/button";
 import {
@@ -16,17 +15,12 @@ import { toast } from "@/components/ui/use-toast";
 import { useEventStore } from "@/store/event-store";
 import { EventType } from "@/type/event-type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Loader2, Pencil, Play, Trash2 } from "lucide-react";
+import { Loader2, Trash2 } from "lucide-react";
 import { useState } from "react";
-import AssignDialog from "./AssignDialog";
 
 const apiClient = new ApiClient();
 
 const EventAction = ({ event }: { event: EventType }) => {
-  const updateMemberCategoryUrl = `${process.env.NEXT_PUBLIC_API_URL}${apiUrls.msdynamicEvents.updateMemberCategory}?eventId=${event.id}`;
-
-  const [isOpen, setIsOpen] = useState(false);
-
   const { selectedEventId: activeEventId } = useEventStore();
 
   const queryClient = useQueryClient();
@@ -69,23 +63,6 @@ const EventAction = ({ event }: { event: EventType }) => {
     },
   });
 
-  const updateMemberCategoryMutation = useMutation({
-    mutationFn: () => apiClient.updateMemberCategory(event.id),
-    mutationKey: ["event", event.id, "updateMemberCategory"],
-    onSuccess: () => {
-      console.log("Member category updated");
-      toast({
-        description: (
-          <p>
-            Member category update for event <b>{event.name}</b> has been
-            triggered
-          </p>
-        ),
-      });
-      queryClient.invalidateQueries({ queryKey: ["events"] });
-    },
-  });
-
   return (
     <div className="flex flex-row space-x-4 items-center">
       <Select
@@ -113,35 +90,6 @@ const EventAction = ({ event }: { event: EventType }) => {
           updateEventConfigId.isPending ? "inline-flex" : "invisible"
         }`}
       />
-      <TooltipWrapper content={"Update Config"}>
-        <Button
-          variant="outline"
-          size="icon"
-          onClick={(e) => {
-            e.stopPropagation();
-            setIsOpen(!isOpen);
-          }}
-        >
-          <Pencil className="h-4 w-4 text-blue-800" />
-        </Button>
-      </TooltipWrapper>
-      <TooltipWrapper content={updateMemberCategoryUrl}>
-        <Button
-          variant="outline"
-          size="icon"
-          disabled={updateMemberCategoryMutation.isPending}
-          onClick={(e) => {
-            e.stopPropagation();
-            updateMemberCategoryMutation.mutate();
-          }}
-        >
-          {updateMemberCategoryMutation.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Play className="h-4 w-4 text-green-800" />
-          )}
-        </Button>
-      </TooltipWrapper>
       <TooltipWrapper content={"Delete"}>
         <Button
           variant="outline"
@@ -160,13 +108,6 @@ const EventAction = ({ event }: { event: EventType }) => {
           )}
         </Button>
       </TooltipWrapper>
-      <AssignDialog
-        open={isOpen}
-        onOpenChange={() => {
-          setIsOpen(!isOpen);
-        }}
-        event={event}
-      />
     </div>
   );
 };

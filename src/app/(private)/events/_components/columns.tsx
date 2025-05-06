@@ -4,6 +4,7 @@ import CopyToClipboard from "@/components/copy-to-clipboard";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EventType } from "@/type/event-type";
 import { ColumnDef } from "@tanstack/react-table";
+import { EventNameCell } from "./event-name-cell";
 import EventAction from "./EventAction";
 
 export const columns: ColumnDef<EventType>[] = [
@@ -21,6 +22,9 @@ export const columns: ColumnDef<EventType>[] = [
   {
     accessorKey: "name",
     header: "Event Name",
+    cell: ({ row }) => {
+      return <EventNameCell event={row.original} />;
+    },
   },
   {
     accessorKey: "url",
@@ -29,7 +33,7 @@ export const columns: ColumnDef<EventType>[] = [
       const event = row.original;
       const url = `${process.env.NEXT_PUBLIC_API_URL}/event?eventId=${event.id}`;
       return (
-        <div className="flex flex-row items-center space-x-2">
+        <div className="flex flex-row items-center">
           <a
             href={url}
             target="_blank"

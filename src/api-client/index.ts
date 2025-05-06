@@ -165,7 +165,39 @@ class ApiClient {
 
   public async updateMemberCategory(eventId: string): Promise<void> {
     const url = `${apiUrls.msdynamicEvents.updateMemberCategory}?eventId=${eventId}`;
-    return this.httpClient.request<void>(url, "POST");
+    return this.httpClient.request<void>(url, "GET");
+  }
+
+  public async updateGroupMemberCategory(
+    eventId: string,
+    group: string
+  ): Promise<void> {
+    const url = `${apiUrls.msdynamicEvents.updateGroupMemberCategory}?eventId=${eventId}&group=${group}`;
+    return this.httpClient.request<void>(url, "GET");
+  }
+
+  public async updateIndividualMemberCategory(
+    eventId: string,
+    contactId: string
+  ): Promise<void> {
+    const url = `${apiUrls.msdynamicEvents.updateIndividualMemberCategory}?eventId=${eventId}&contactId=${contactId}`;
+    return this.httpClient.request<void>(url, "GET");
+  }
+
+  public async getContacts(
+    eventId: string,
+    email: string
+  ): Promise<Array<{ id: string; email: string }>> {
+    const url = `${apiUrls.msdynamicEvents.contacts}?eventId=${eventId}&email=${email}`;
+    return this.httpClient.request<any>(url);
+  }
+
+  public async getGroups(
+    eventId: string,
+    group: string
+  ): Promise<{ success: boolean }> {
+    const url = `${apiUrls.msdynamicEvents.groups}?eventId=${eventId}&group=${group}`;
+    return this.httpClient.request<any>(url);
   }
 }
 

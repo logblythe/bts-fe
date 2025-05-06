@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { useEventStore } from "@/store/event-store";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2, Plus } from "lucide-react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import EventDialog from "./EventDialog";
 import { columns } from "./columns";
@@ -14,9 +13,7 @@ import { columns } from "./columns";
 const apiClient = new ApiClient();
 
 const EventsList = () => {
-  const router = useRouter();
-
-  const { selectedEventId, selectEvent } = useEventStore();
+  const { selectedEventId } = useEventStore();
   const [isOpen, setIsOpen] = useState(false);
   const [rowSelection, setRowSelection] = useState({});
 
