@@ -195,7 +195,7 @@ class ApiClient {
   public async getGroups(
     eventId: string,
     group: string
-  ): Promise<{ success: boolean }> {
+  ): Promise<{ coordinatorId: string; groupName: string }[]> {
     const url = `${apiUrls.msdynamicEvents.groups}?eventId=${eventId}&group=${group}`;
     return this.httpClient.request<any>(url);
   }

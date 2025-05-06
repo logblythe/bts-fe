@@ -112,6 +112,7 @@ export const UpdateIndividualMemberCategory = () => {
                             setSelectedContactId(id);
                             setValue("");
                           }}
+                          className="w-full"
                         >
                           {email}
                         </p>
