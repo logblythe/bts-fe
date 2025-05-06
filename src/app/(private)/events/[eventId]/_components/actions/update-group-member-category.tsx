@@ -86,7 +86,7 @@ export const UpdateGroupMemberCategory = () => {
               <div className="flex flex-row gap-2 items-center">
                 <p className="text-sm">{updateGroupMemberCategoryUrl}</p>
                 <Button
-                  variant={"ghost"}
+                  className="text-white rounded-full bg-green-500 min-w-10"
                   size="icon"
                   disabled={updateGroupMemberCategoryMutation.isPending}
                   onClick={(e) => {
@@ -97,7 +97,7 @@ export const UpdateGroupMemberCategory = () => {
                   {updateGroupMemberCategoryMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    <Play className="h-4 w-4 text-green-800" />
+                    <Play className="h-4 w-4 text-white" />
                   )}
                 </Button>
               </div>

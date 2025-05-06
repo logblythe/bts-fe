@@ -44,18 +44,18 @@ export const UpdateMemberCategory = () => {
           <p className="text-sm">{updateMemberCategoryUrl}</p>
         </div>
         <Button
-          variant={"ghost"}
           size="icon"
           disabled={updateMemberCategoryMutation.isPending}
           onClick={(e) => {
             e.stopPropagation();
             updateMemberCategoryMutation.mutate();
           }}
+          className="text-white rounded-full bg-green-500 min-w-10"
         >
           {updateMemberCategoryMutation.isPending ? (
             <Loader2 className="h-4 w-4 animate-spin" />
           ) : (
-            <Play className="h-4 w-4 text-green-800" />
+            <Play className="h-4 w-4 text-white" />
           )}
         </Button>
       </div>
