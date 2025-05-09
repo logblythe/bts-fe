@@ -23,7 +23,7 @@ export const UpdateIndividualMemberCategory = () => {
 
   const queryClient = useQueryClient();
 
-  const updateIndividualMemberCategoryUrl = `${process.env.NEXT_PUBLIC_API_URL}${apiUrls.msdynamicEvents.updateMemberCategory}?eventId=${selectedEventId}&contactId=${selectedContactId}`;
+  const updateIndividualMemberCategoryUrl = `${process.env.NEXT_PUBLIC_API_URL}${apiUrls.msdynamicEvents.updateIndividualMemberCategory}?eventId=${selectedEventId}&contactId=${selectedContactId}`;
 
   const updateIndividualMemberCategoryMutation = useMutation({
     mutationFn: () =>

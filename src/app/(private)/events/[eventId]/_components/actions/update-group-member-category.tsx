@@ -25,11 +25,14 @@ export const UpdateGroupMemberCategory = () => {
 
   const { selectedEventId, selectedEvent } = useEventStore();
 
-  const updateGroupMemberCategoryUrl = `${process.env.NEXT_PUBLIC_API_URL}${apiUrls.msdynamicEvents.updateMemberCategory}?eventId=${selectedEventId}&group=${selectCoordinatorId}`;
+  const updateGroupMemberCategoryUrl = `${process.env.NEXT_PUBLIC_API_URL}${apiUrls.msdynamicEvents.updateGroupMemberCategory}?eventId=${selectedEventId}&group=${selectCoordinatorId}`;
 
   const updateGroupMemberCategoryMutation = useMutation({
     mutationFn: () =>
-      apiClient.updateGroupMemberCategory(selectedEventId!, value),
+      apiClient.updateGroupMemberCategory(
+        selectedEventId!,
+        selectCoordinatorId!
+      ),
     mutationKey: ["event", selectedEventId!, "updateMemberCategory"],
     onSuccess: () => {
       toast({
