@@ -62,7 +62,7 @@ export const UpdateIndividualMemberCategory = () => {
       <div className="flex flex-row space-x-4 items-end ">
         <div className="flex flex-col space-y-2 ">
           <Label className="font-medium leading-none peer text-gray-500">
-            Update Individual Member Category
+            Update Individual Delegate
           </Label>
           <div className="flex flex-col space-y-1">
             <div className="flex flex-row gap-4 w-fit">

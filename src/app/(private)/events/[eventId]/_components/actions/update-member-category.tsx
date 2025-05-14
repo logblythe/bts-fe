@@ -39,7 +39,7 @@ export const UpdateMemberCategory = () => {
       <div className="flex flex-row space-x-4 items-end ">
         <div className="flex flex-col space-y-2 ">
           <Label className="font-medium leading-none peer text-gray-500">
-            Update Member Category
+            Update All Delegates
           </Label>
           <p className="text-sm">{updateMemberCategoryUrl}</p>
         </div>

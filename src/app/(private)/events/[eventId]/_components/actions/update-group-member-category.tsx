@@ -64,7 +64,7 @@ export const UpdateGroupMemberCategory = () => {
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-2 ">
           <Label className="font-medium leading-none peer text-gray-500">
-            Update Group Member Category
+            Update Group(Search by Group Name)
           </Label>
           <div className="flex flex-row gap-4 w-fit">
             <Input
