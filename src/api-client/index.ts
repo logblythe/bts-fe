@@ -27,7 +27,7 @@ class ApiClient {
 
   //AUTHENTICATION
   public async login(data: any): Promise<AuthUser> {
-    return this.httpClient.unauthenticatedRequest<AuthUser>(
+    return this.httpClient.unauthenticatedRequest(
       apiUrls.auth.login,
       "POST",
       {},
