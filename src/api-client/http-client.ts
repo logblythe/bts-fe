@@ -4,7 +4,7 @@ export default class HttpClient {
   private baseUrl: string;
 
   constructor(baseUrl: string) {
-    this.baseUrl = baseUrl;
+    this.baseUrl = `${baseUrl}`;
   }
 
   private getUserInfo(): AuthUser {
