@@ -3,6 +3,7 @@
 import ApiClient from "@/api-client/";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -90,6 +91,9 @@ const EventAction = ({ event }: { event: EventType }) => {
           updateEventConfigId.isPending ? "inline-flex" : "invisible"
         }`}
       />
+
+      <Checkbox className="h-4 w-4 cursor-pointer gap-4"></Checkbox>
+
       <TooltipWrapper content={"Delete"}>
         <Button
           variant="outline"
