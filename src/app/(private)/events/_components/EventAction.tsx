@@ -3,6 +3,7 @@
 import ApiClient from "@/api-client/";
 import { TooltipWrapper } from "@/components/TooltipWrapper";
 import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   Select,
   SelectContent,
@@ -23,6 +24,10 @@ const apiClient = new ApiClient();
 const EventAction = ({ event }: { event: EventType }) => {
   const { selectedEventId: activeEventId } = useEventStore();
 
+  const [webhookEnabled, setWebhookEnabled] = useState(
+    event.existsInWebhook ?? false
+  );
+
   const queryClient = useQueryClient();
 
   const [currentConfigId, setCurrentConfigId] = useState(event.configId ?? "-");
@@ -36,6 +41,7 @@ const EventAction = ({ event }: { event: EventType }) => {
     mutationFn: ({ configId }: { configId: string }) =>
       apiClient.updateEventConfig(event.id, { ...event, configId }),
     mutationKey: ["event", event.id, "updateConfigId"],
+
     onSuccess: () => {
       toast({
         description: (
@@ -63,8 +69,40 @@ const EventAction = ({ event }: { event: EventType }) => {
     },
   });
 
+  const toggleWebhookMutation = useMutation({
+    mutationFn: async (enabled: boolean) => {
+      if (enabled) {
+        await apiClient.activateEventWebhook(event.id);
+      } else {
+        await apiClient.deactivateEventWebhook(event.id);
+      }
+    },
+    onError: (error) => {
+      toast({
+        description: "Webhook call failed.",
+        variant: "destructive",
+      });
+    },
+    onSuccess: (_, enabled) => {
+      toast({
+        description: (
+          <p>
+            Webhook {enabled ? "activated" : "deactivated"} for{" "}
+            <b>{event.name}</b>
+          </p>
+        ),
+      });
+    },
+  });
+
+  const handleWebhookToggle = (checked: boolean | "indeterminate") => {
+    const isChecked = checked === true;
+    setWebhookEnabled(isChecked);
+    toggleWebhookMutation.mutate(isChecked);
+  };
+
   return (
-    <div className="flex flex-row space-x-4 items-center">
+    <div className="flex flex-col sm:flex-row sm:items-center gap-2 w-full sm:w-auto">
       <Select
         onValueChange={(configId) => {
           setCurrentConfigId(configId);
@@ -90,24 +128,51 @@ const EventAction = ({ event }: { event: EventType }) => {
           updateEventConfigId.isPending ? "inline-flex" : "invisible"
         }`}
       />
-      <TooltipWrapper content={"Delete"}>
-        <Button
-          variant="outline"
-          size="icon"
-          className="text-red-500"
-          disabled={activeEventId === event.id}
-          onClick={(e) => {
-            e.stopPropagation();
-            deleteMutation.mutate();
-          }}
-        >
-          {deleteMutation.isPending ? (
-            <Loader2 className="h-4 w-4 animate-spin" />
-          ) : (
-            <Trash2 className="h-4 w-4" />
-          )}
-        </Button>
-      </TooltipWrapper>
+
+      <div className="flex items-center gap-2">
+        <div className="w-5 h-5 flex items-center justify-center shrink-0 relative">
+          <Checkbox
+            checked={webhookEnabled}
+            onCheckedChange={handleWebhookToggle}
+            className="h-4 w-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              visibility: toggleWebhookMutation.isPending
+                ? "hidden"
+                : "visible",
+            }}
+          />
+          <Loader2
+            className="w-4 h-4 animate-spin text-muted-foreground absolute "
+            style={{
+              visibility: toggleWebhookMutation.isPending
+                ? "visible"
+                : "hidden",
+            }}
+          />
+        </div>
+        <span className="text-sm whitespace-nowrap">Add to WebHook</span>
+      </div>
+
+      <div className=" ml-2 ">
+        <TooltipWrapper content={"Delete"}>
+          <Button
+            variant="outline"
+            size="icon"
+            className="text-red-500 ml-4 mr-4"
+            disabled={activeEventId === event.id}
+            onClick={(e) => {
+              e.stopPropagation();
+              deleteMutation.mutate();
+            }}
+          >
+            {deleteMutation.isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Trash2 className="h-4 w-4" />
+            )}
+          </Button>
+        </TooltipWrapper>
+      </div>
     </div>
   );
 };

@@ -32,4 +32,10 @@ export const apiUrls = {
     deleteById: (configId: string) => `/configs/${configId}`,
     updateById: (configId: string) => `/configs/${configId}`,
   },
+  webhook: {
+    activateEvent: (eventId: string) =>
+      `/webhook/event-activate?eventId=${eventId}`,
+    deactivateEvent: (eventId: string) =>
+      `/webhook/event-deactivate?eventId=${eventId}`,
+  },
 };

@@ -191,7 +191,6 @@ class ApiClient {
     const url = `${apiUrls.msdynamicEvents.contacts}?eventId=${eventId}&email=${email}`;
     return this.httpClient.request<any>(url);
   }
-
   public async getGroups(
     eventId: string,
     group: string
@@ -199,6 +198,15 @@ class ApiClient {
     const url = `${apiUrls.msdynamicEvents.groups}?eventId=${eventId}&group=${group}`;
     return this.httpClient.request<any>(url);
   }
-}
 
+  public async activateEventWebhook(eventId: string): Promise<void> {
+    const url = apiUrls.webhook.activateEvent(eventId); // ← FIXED
+    return this.httpClient.request<void>(url, "GET");
+  }
+
+  public async deactivateEventWebhook(eventId: string): Promise<void> {
+    const url = apiUrls.webhook.deactivateEvent(eventId); // ← FIXED
+    return this.httpClient.request<void>(url, "GET");
+  }
+}
 export default ApiClient;

@@ -4,8 +4,8 @@ import CopyToClipboard from "@/components/copy-to-clipboard";
 import { Checkbox } from "@/components/ui/checkbox";
 import { EventType } from "@/type/event-type";
 import { ColumnDef } from "@tanstack/react-table";
-import { EventNameCell } from "./event-name-cell";
 import EventAction from "./EventAction";
+import { EventNameCell } from "./event-name-cell";
 
 export const columns: ColumnDef<EventType>[] = [
   {
@@ -49,6 +49,7 @@ export const columns: ColumnDef<EventType>[] = [
   },
   {
     header: "Actions",
+
     cell: ({ row }) => {
       const event = row.original;
       return <EventAction event={event} />;
