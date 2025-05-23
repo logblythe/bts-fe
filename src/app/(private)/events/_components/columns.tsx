@@ -49,6 +49,7 @@ export const columns: ColumnDef<EventType>[] = [
   },
   {
     header: "Actions",
+
     cell: ({ row }) => {
       const event = row.original;
       return <EventAction event={event} />;

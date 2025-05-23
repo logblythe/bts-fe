@@ -129,16 +129,28 @@ const EventAction = ({ event }: { event: EventType }) => {
         }`}
       />
 
-      <div className="flex items-center space-x-2 min-w-[150px]">
-        {toggleWebhookMutation.isPending ? (
-          <Loader2 className="h-4 w-4 animate-spin text-muted-foreground" />
-        ) : (
+      <div className="flex items-center gap-2">
+        <div className="w-5 h-5 flex items-center justify-center shrink-0 relative">
           <Checkbox
             checked={webhookEnabled}
             onCheckedChange={handleWebhookToggle}
+            className="h-4 w-4 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+            style={{
+              visibility: toggleWebhookMutation.isPending
+                ? "hidden"
+                : "visible",
+            }}
           />
-        )}
-        <span className="text-sm">Add to WebHook</span>
+          <Loader2
+            className="w-4 h-4 animate-spin text-muted-foreground absolute "
+            style={{
+              visibility: toggleWebhookMutation.isPending
+                ? "visible"
+                : "hidden",
+            }}
+          />
+        </div>
+        <span className="text-sm whitespace-nowrap">Add to WebHook</span>
       </div>
 
       <div className=" ml-2 ">
