@@ -37,10 +37,6 @@ const EventAction = ({ event }: { event: EventType }) => {
     queryFn: () => apiClient.getConfigs(),
   });
 
-  // useEffect(() => {
-  //   setWebhookEnabled(event.existsInWebhook ?? false);
-  // }, [event.existsInWebhook, event.id]);
-  console.log("the eventWebhook", event.existsInWebhook);
   const updateEventConfigId = useMutation({
     mutationFn: ({ configId }: { configId: string }) =>
       apiClient.updateEventConfig(event.id, { ...event, configId }),
@@ -75,7 +71,6 @@ const EventAction = ({ event }: { event: EventType }) => {
 
   const toggleWebhookMutation = useMutation({
     mutationFn: async (enabled: boolean) => {
-      console.log("Calling webhook API with:", enabled); // ← add this
       if (enabled) {
         await apiClient.activateEventWebhook(event.id);
       } else {
@@ -84,7 +79,7 @@ const EventAction = ({ event }: { event: EventType }) => {
     },
     onError: (error) => {
       toast({
-        description: "Webhook call failed. See console for details.",
+        description: "Webhook call failed.",
         variant: "destructive",
       });
     },

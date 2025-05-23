@@ -115,7 +115,6 @@ class ApiClient {
   public async deleteEventById(eventId: string): Promise<EventType[]> {
     return this.httpClient.request<EventType[]>(
       apiUrls.events.deleteEventById(eventId),
-
       "DELETE"
     );
   }
