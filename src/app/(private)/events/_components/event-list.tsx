@@ -31,9 +31,9 @@ const EventsList = () => {
   }, [data, selectedEventId]);
 
   return (
-    <div className="container mx-auto py-10 space-y-2">
-      <div className="flex flex-row  justify-between items-end">
-        <div className="flex flex-row space-x-4 items-center">
+    <div className="container mx-auto py-10 space-y-6">
+      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center space-y-4 sm:space-y-0">
+        <div className="flex flex-row items-center space-x-4">
           <h3 className="scroll-m-20 text-2xl font-semibold tracking-tight">
             <span>All Events</span>
           </h3>
@@ -53,12 +53,14 @@ const EventsList = () => {
           }}
         />
       </div>
-      <DataTable
-        columns={columns}
-        data={data}
-        rowSelection={rowSelection}
-        onRowSelectionChange={setRowSelection}
-      />
+      <div className="overflow-x-auto">
+        <DataTable
+          columns={columns}
+          data={data}
+          rowSelection={rowSelection}
+          onRowSelectionChange={setRowSelection}
+        />
+      </div>
     </div>
   );
 };
